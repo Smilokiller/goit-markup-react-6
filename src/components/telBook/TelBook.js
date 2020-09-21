@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import ContactList from "./telInput/ContactList";
 import { FindInput } from "./telInput/FindInput";
 import { CSSTransition } from "react-transition-group";
@@ -11,36 +11,8 @@ import { telBookReducers } from "../../redux/telBookReducers";
 function TelBook({ contacts }) {
   const dispatch = useDispatch();
   const {
-    actions: { localContacts, filterContacts },
+    actions: { filterContacts },
   } = telBookReducers;
-  const prevCount = usePrevious(contacts);
-
-  useEffect(() => {
-    const dataFromStorage = localStorage.getItem("contacts");
-    const contacts = JSON.parse(dataFromStorage);
-    if (contacts) {
-      dispatch(
-        localContacts({
-          contacts,
-        })
-      );
-    }
-  }, []);
-
-  function usePrevious(value) {
-    const ref = useRef();
-
-    useEffect(() => {
-      ref.current = value;
-    }, [value]);
-    return ref.current;
-  }
-
-  useEffect(() => {
-    if (contacts !== prevCount) {
-      localStorage.setItem("contacts", JSON.stringify(contacts));
-    }
-  });
 
   return (
     <div className={styles.body}>

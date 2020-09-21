@@ -17,12 +17,6 @@ export const telBookReducers = createSlice({
         items: [...state.contacts.items, payload],
       },
     }),
-    localContacts: (state, { type, payload }) => ({
-      contacts: {
-        ...state.contacts,
-        items: [...state.contacts.items, ...payload.contacts],
-      },
-    }),
     deleteContacts: (state, { type, payload }) => ({
       contacts: {
         ...state.contacts,
