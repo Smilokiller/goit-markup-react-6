@@ -4,9 +4,10 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { TelInput } from "./TelInput";
 import { connect } from "react-redux";
-import { addContacts } from "../../../../redux/actions/telBookActions";
 import { CSSTransition } from "react-transition-group";
 import styles from "../../telBook.module.css";
+import { useDispatch } from "react-redux";
+import { telBookReducers } from "../../../../redux/telBookReducers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,11 +19,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ContactForm({ addContacts, contacts }) {
+function ContactForm({ contacts }) {
   const [allertShow, setAllertShow] = useState(false);
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const {
+    actions: { addContacts },
+  } = telBookReducers;
 
   function handleChange({ target }) {
     const { name, value } = target;
@@ -45,11 +50,13 @@ function ContactForm({ addContacts, contacts }) {
       setName("");
       setNumber("");
     } else {
-      addContacts({
-        id: uuidv4(),
-        name: name,
-        number: number,
-      });
+      dispatch(
+        addContacts({
+          id: uuidv4(),
+          name: name,
+          number: number,
+        })
+      );
       setName("");
       setNumber("");
     }
@@ -87,7 +94,5 @@ const mapStateToProps = (state) => {
     filter: state.contacts.filter,
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  addContacts: (contact) => dispatch(addContacts(contact)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
+
+export default connect(mapStateToProps)(ContactForm);

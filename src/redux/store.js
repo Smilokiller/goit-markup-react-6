@@ -1,7 +1,7 @@
-import { createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import telBookReducers from "./reducers/telBookReducers";
+import { telBookReducers } from "./telBookReducers";
+import { configureStore } from "@reduxjs/toolkit";
+const { reducer } = telBookReducers;
 
-const store = createStore(telBookReducers, composeWithDevTools());
+const store = configureStore({ reducer: reducer });
 
 export default store;

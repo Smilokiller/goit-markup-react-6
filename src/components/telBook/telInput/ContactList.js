@@ -2,10 +2,15 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import styles from "./contactList.module.css";
-import { deleteContacts } from "../../../redux/actions/telBookActions";
 import { connect } from "react-redux";
+import { telBookReducers } from "../../../redux/telBookReducers";
+import { useDispatch } from "react-redux";
 
 function ContactList({ contacts }) {
+  const dispatch = useDispatch();
+  const {
+    actions: { deleteContacts },
+  } = telBookReducers;
   return (
     <>
       <TransitionGroup component="ul">
@@ -19,7 +24,7 @@ function ContactList({ contacts }) {
                 type="button"
                 variant="contained"
                 color="secondary"
-                onClick={() => deleteContacts(el.id)}
+                onClick={() => dispatch(deleteContacts(el.id))}
               >
                 DELETE
               </Button>
@@ -42,7 +47,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  deleteContacts: (id) => dispatch(deleteContacts(id)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+export default connect(mapStateToProps)(ContactList);
